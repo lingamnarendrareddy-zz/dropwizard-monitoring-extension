@@ -1,0 +1,249 @@
+### ANY CHANGES TO THIS FILE DOES NOT REQUIRE A RESTART ###
+
+#This will create this metric in all the tiers, under this path
+metricPrefix: Custom Metrics|Dropwizard
+
+#This will create it in specific Tier. Replace <TIER_NAME>
+#metricPrefix: Server|Component:<TIER_NAME>|Custom Metrics|Dropwizard
+
+servers:
+  - uri: http://osxltnredd.local:8081/metrics
+    displayName: metrics
+
+# number of concurrent tasks
+numberOfThreads: 5
+encryptionKey: welcome
+
+connection:
+  socketTimeout: 2000
+  connectTimeout: 2000
+  sslCertCheckEnabled: false
+  sslVerifyHostname: false
+  sslProtocols: ["TLSv1"]
+
+
+####
+## type = AggregationType.TimeRollup.ClusterRollup
+## AggregationType = AVG | SUM | OBS
+## TimeRollup = AVG | SUM | CUR
+## ClusterRollup = IND | COL
+##
+## https://docs.appdynamics.com/display/PRO42/Build+a+Monitoring+Extension+Using+Java
+####
+
+metrics:
+   - meters:
+       - displayName : "Logback|M1RateAll"
+         path : "ch.qos.logback.core.Appender.all"
+         type: "OBS.CUR.COL"
+       - displayName: "Logback|M1Rate|Error"
+         path: "ch.qos.logback.core.Appender.error"
+         type: "OBS.CUR.COL"
+       - displayName: "Logback|M1Rate|Debug"
+         path: "ch.qos.logback.core.Appender.debug"
+         type: "OBS.CUR.COL"
+       - displayName: "Logback|M1Rate|Info"
+         path: "ch.qos.logback.core.Appender.info"
+         type: "OBS.CUR.COL"
+       - displayName: "Logback|M1Rate|Trace"
+         path: "ch.qos.logback.core.Appender.trace"
+         type: "OBS.CUR.COL"
+       - displayName: "Logback|M1Rate|Warn"
+         path: "ch.qos.logback.core.Appender.warn"
+         type: "OBS.CUR.COL"
+
+         # HTTP Response Codes
+       - displayName : "Jetty|Servlet|ResponseCodeM1Rate|1xx"
+         path : "io.dropwizard.jetty.MutableServletContextHandler.1xx-responses"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|ResponseCodeM1Rate|2xx"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.2xx-responses"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|ResponseCodeM1Rate|3xx"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.3xx-responses"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|ResponseCodeM1Rate|4xx"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.4xx-responses"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|ResponseCodeM1Rate|5xx"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.5xx-responses"
+         type: "OBS.CUR.COL"
+
+         #Async Calls
+       - displayName: "Jetty|Servlet|Request|AsyncM1Rate|Dispatches"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.async-dispatches"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|AsyncM1Rate|timeouts"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.async-timeouts"
+         type: "OBS.CUR.COL"
+
+   - timers:
+         #Servlet
+       - displayName: "Jetty|Servlet|Request|Method|Connect"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.connect-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Delete"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.delete-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Get"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.get-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Head"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.head-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Move"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.move-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Options"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.options-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Other"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.other-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Post"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.post-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Put"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.put-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Trace"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.trace-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Method|Other"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.other-requests"
+         type: "OBS.CUR.COL"
+       - displayName: "Jetty|Servlet|Request|Dispatches"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.dispatches"
+         type: "OBS.CUR.COL"
+       - displayName : "Jetty|Server|HttpConnectionFactory|connections"
+         path : "org\\.eclipse\\.jetty\\.server\\.HttpConnectionFactory\\.([0-9]+)\\.connections"
+         type: "OBS.CUR.COL"
+         pattern: "1"
+
+   - gauges:
+        # Jetty Server
+       - displayName : "Jetty|Server|QueuedThreadPool|Counts|ThreadsCurrent"
+         path : "org.eclipse.jetty.util.thread.QueuedThreadPool.dw.size"
+         type: "OBS.CUR.COL"
+       - displayName : "Jetty|Server|QueuedThreadPool|Counts|JobsWaiting"
+         path : "org.eclipse.jetty.util.thread.QueuedThreadPool.dw.jobs"
+         type: "OBS.CUR.COL"
+       - displayName : "Jetty|Server|QueuedThreadPool|Utilization|Max"
+         path : "org.eclipse.jetty.util.thread.QueuedThreadPool.dw.utilization-max"
+         type: "OBS.CUR.COL"
+         multiplier: "100"
+       - displayName : "Jetty|Server|QueuedThreadPool|Utilization|Current"
+         path : "org.eclipse.jetty.util.thread.QueuedThreadPool.dw.utilization"
+         type: "OBS.CUR.COL"
+         multiplier: "100"
+
+         #Percentage
+       - displayName: "Jetty|Servlet|ResponseCodePercentage|4xx"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.percent-4xx-1m"
+         type: "OBS.CUR.COL"
+         multiplier: "100"
+       - displayName: "Jetty|Servlet|ResponseCodePercentage|5xx"
+         path: "io.dropwizard.jetty.MutableServletContextHandler.percent-5xx-1m"
+         type: "OBS.CUR.COL"
+         multiplier: "100"
+
+        # Jetty Heap
+       - displayName : "JVM|Memory|Heap|Initial"
+         path : "jvm.memory.heap.init"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|Heap|Committed"
+         path : "jvm.memory.heap.committed"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|Heap|Max"
+         path : "jvm.memory.heap.max"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|Heap|Used"
+         path : "jvm.memory.heap.used"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|Heap|Usage"
+         path : "jvm.memory.heap.usage"
+         multiplier: "100"
+         type: "OBS.CUR.COL"
+
+         # Jetty non-Heap
+       - displayName : "JVM|Memory|NonHeap|Initial"
+         path : "jvm.memory.non-heap.init"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|NonHeap|Committed"
+         path : "jvm.memory.non-heap.committed"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|NonHeap|Max"
+         path : "jvm.memory.non-heap.max"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|NonHeap|Used"
+         path : "jvm.memory.non-heap.used"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Memory|NonHeap|Usage"
+         path : "jvm.memory.non-heap.usage"
+         multiplier: "100"
+         type: "OBS.CUR.COL"
+
+         #JVM Buffer
+       - displayName : "JVM|Buffers|Direct|Capacity"
+         path : "jvm.buffers.direct.capacity"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Buffers|Direct|Count"
+         path : "jvm.buffers.direct.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Buffers|Direct|Used"
+         path : "jvm.buffers.direct.used"
+         type: "OBS.CUR.COL"
+
+         #Mapped
+       - displayName : "JVM|Buffers|Mapped|Capacity"
+         path : "jvm.buffers.mapped.capacity"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Buffers|Mapped|Count"
+         path : "jvm.buffers.mapped.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Buffers|Mapped|Used"
+         path : "jvm.buffers.mapped.used"
+         type: "OBS.CUR.COL"
+
+         #Threads
+       - displayName : "JVM|Threads|Count|Total"
+         path : "jvm.threads.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Threads|Count|Daemon"
+         path : "jvm.threads.daemon.count"
+         type: "OBS.CUR.COL"
+
+         #Thread States
+       - displayName : "JVM|Threads|State|New"
+         path : "jvm.threads.new.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Threads|State|Runnable"
+         path : "jvm.threads.runnable.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Threads|State|Blocked"
+         path : "jvm.threads.blocked.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Threads|State|Waiting"
+         path : "jvm.threads.waiting.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Threads|State|TimedWaiting"
+         path : "jvm.threads.timed_waiting.count"
+         type: "OBS.CUR.COL"
+       - displayName : "JVM|Threads|State|Terminated"
+         path : "jvm.threads.terminated.count"
+         type: "OBS.CUR.COL"
+
+         #pattern
+       - displayName : "JVM|GC|Collections|Time"
+         path : "jvm\\.gc\\.([^.]+)\\.time"
+         type: "OBS.CUR.COL"
+         pattern: "1"
+       - displayName : "JVM|GC|Collections|count"
+         path : "jvm\\.gc\\.([^.]+)\\.count"
+         type: "OBS.CUR.COL"
+         pattern: "1"
+       - displayName : "JVM|Memory|PoolUsage"
+         path : "jvm\\.memory\\.pools\\.([^\\.]+)\\.usage"
+         type: "OBS.CUR.COL"
+         multiplier: "100"
+         pattern: "1"
