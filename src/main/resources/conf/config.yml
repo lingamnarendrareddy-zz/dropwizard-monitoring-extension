@@ -3,8 +3,8 @@
 #This will create this metric in all the tiers, under this path
 metricPrefix: Custom Metrics|Dropwizard
 
-#This will create it in specific Tier. Replace <TIER_NAME>
-#metricPrefix: Server|Component:<TIER_NAME>|Custom Metrics|Dropwizard
+#This will create it in specific Tier. Replace <TIER_ID>
+#metricPrefix: Server|Component:<TIER_ID>|Custom Metrics|Dropwizard
 
 servers:
   - uri: http://osxltnredd.local:8081/metrics
@@ -12,24 +12,10 @@ servers:
 
 # number of concurrent tasks
 numberOfThreads: 5
-#encryptionKey: welcome
 
 connection:
   socketTimeout: 2000
   connectTimeout: 2000
-#  sslCertCheckEnabled: false
-#  sslVerifyHostname: false
-#  sslProtocols: ["TLSv1"]
-
-
-####
-## type = AggregationType.TimeRollup.ClusterRollup
-## AggregationType = AVG | SUM | OBS
-## TimeRollup = AVG | SUM | CUR
-## ClusterRollup = IND | COL
-##
-## https://docs.appdynamics.com/display/PRO42/Build+a+Monitoring+Extension+Using+Java
-####
 
 metrics:
    - meters:
@@ -247,3 +233,12 @@ metrics:
          type: "OBS.CUR.COL"
          multiplier: "100"
          pattern: "1"
+
+ ####
+ ## type = AggregationType.TimeRollup.ClusterRollup
+ ## AggregationType = AVG | SUM | OBS
+ ## TimeRollup = AVG | SUM | CUR
+ ## ClusterRollup = IND | COL
+ ##
+ ## https://docs.appdynamics.com/display/PRO42/Build+a+Monitoring+Extension+Using+Java
+ ####

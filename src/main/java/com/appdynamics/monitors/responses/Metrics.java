@@ -2,9 +2,9 @@ package com.appdynamics.monitors.responses;
 
 import java.util.Map;
 
+
 /***
- * Copied from https://github.com/dbaggott/newrelic-dropwizard/blob/master/src/main/java/io/dnbg/newrelic/dropwizard/responses/Metrics.java
- *
+ *Created by narendra.reddy on 04/20/17.
  */
 public class Metrics {
     public String version;

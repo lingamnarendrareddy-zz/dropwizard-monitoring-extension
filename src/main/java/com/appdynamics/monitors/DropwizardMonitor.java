@@ -19,20 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a template to create the extensions that fetches the data through the http calls.
- * The entry point is the execute() method.
  *
- * The MonitorConfiguration will do a lot of boiler plate tasks such us
- *  - Reading / Watching / Loading the config
- *  - Configure the HttpClient
- *      - Authentication
- *      - SSl Settings
- *      - Timeouts
- *      - Proxy Config
- *  - Configure the Executor Service
- *  - Scheduled Mode
- *
- * Created by abey.tom on 12/15/16.
+ * Created by narendra.reddy on 04/20/17.
  */
 public class DropwizardMonitor extends AManagedMonitor {
     public static final Logger logger = Logger.getLogger(DropwizardMonitor.class);
@@ -66,18 +54,12 @@ public class DropwizardMonitor extends AManagedMonitor {
         if (configuration == null) {
             initialize(argsMap);
         }
-        // Handsoff the task execution to the framework. This will eventually invoke
-        // TaskRunnable.run for non-scheduled mode directly.
+
         configuration.executeTask();
         return new TaskOutput("Whatever");
     }
 
-    /**
-     * Initialize it only once. Read config.yml path from the input args and then set it on the configuration.
-     * The configuration will watch for file changes and update it automatically.
-     *
-     * @param argsMap
-     */
+
     private void initialize(Map<String, String> argsMap) {
         // Get the path of config.yml from the arguments.
         final String configFilePath = argsMap.get("config-file");
@@ -89,13 +71,6 @@ public class DropwizardMonitor extends AManagedMonitor {
         this.configuration = conf;
     }
 
-
-    /**
-     * This abstraction is needed for the scheduled mode.
-     * If you dont want to run the extension every minute and run it for ex every 10 mins,
-     * this way will avoid the data drop. The framework will send the cached data every minute to controller and will fetch
-     * the data from remote every 10 mins and update the cache.
-     */
     private class TaskRunnable implements Runnable {
 
         public void run() {
@@ -116,6 +91,11 @@ public class DropwizardMonitor extends AManagedMonitor {
         }
     }
 
+    /***
+     *
+     * @param args
+     * @throws TaskExecutionException
+     */
     public static void main(String[] args) throws TaskExecutionException {
 
         ConsoleAppender ca = new ConsoleAppender();
@@ -132,17 +112,6 @@ public class DropwizardMonitor extends AManagedMonitor {
         taskArgs.put("config-file", "/Users/narendrareddy/GitHub/dropwizard-monitoring-extension/src/main/resources/conf/config.yml");
 
         monitor.execute(taskArgs, null);
-
-        /*ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(new Runnable() {
-        public void run() {
-        try {
-        monitor.execute(taskArgs, null);
-        } catch (Exception e) {
-        logger.error("Error while running the Task ", e);
-        }
-        }
-        }, 2, 60, TimeUnit.SECONDS);*/
 
     }
 }
